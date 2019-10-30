@@ -12,6 +12,7 @@ class TwilioController < ApplicationController
       flash[:notice] = t(:twilio_call_success, number: params[:number_from])
     else
       flash[:error] = t(:twilio_call_failed)
+      # raise Twilio::REST::RestError.new
     end
     respond_to do |format|
       format.js
@@ -19,10 +20,7 @@ class TwilioController < ApplicationController
   end
 
   def connect
-    response = Twilio::TwiML::VoiceResponse.new do |r|
-      r.dial(number: params[:number_to])
-    end
-
+    response = TwilioManager::CallManager.call(params[:number_to])
     render(xml: response.to_s)
   end
 
