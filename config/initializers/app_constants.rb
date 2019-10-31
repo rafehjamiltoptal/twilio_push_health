@@ -14,3 +14,5 @@ TWILIO_AUTH_TOKEN = if Rails.env.production?
                     else
                       'f8f4a1084eb7f3a8891a62c7ce78f489'.freeze
                     end
+
+DEFAULT_VERIFICATION_CODE_LENGTH = 6

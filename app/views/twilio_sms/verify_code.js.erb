@@ -1,0 +1,9 @@
+$('#twilio_form').html('<%= escape_javascript(render('verification_success')) %>')
+
+<% if flash[:error].present? %>
+  $('#flash_messages').html("<%= escape_javascript(render('shared/flash_error')) %>")
+  <% flash[:error] = nil %>
+<% elsif flash[:notice].present? %>
+  $('#flash_messages').html("<%= escape_javascript(render('shared/flash_notice')) %>")
+  <% flash[:notice] = nil %>
+<% end %>

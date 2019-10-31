@@ -1,0 +1,10 @@
+$('#twilio_form').html('<%= escape_javascript(render('verify_number_form')) %>');
+$('.card-title').html('Enter 6 digit verification code');
+
+<% if flash[:error].present? %>
+  $('#flash_messages').html("<%= escape_javascript(render('shared/flash_error')) %>")
+  <% flash[:error] = nil %>
+<% elsif flash[:notice].present? %>
+  $('#flash_messages').html("<%= escape_javascript(render('shared/flash_notice')) %>")
+  <% flash[:notice] = nil %>
+<% end %>

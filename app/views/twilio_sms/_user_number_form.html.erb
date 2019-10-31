@@ -1,0 +1,11 @@
+<%= form_tag twilio_sms_path, role: 'form', remote: true do |f| %>
+  <div class="card-body">
+    <div class="form-group col-6">
+      <%= label_tag :user_number %>
+      <%= text_field_tag :user_number, '', required: true, class: 'form-control', placeholder: '(651) 555-7889' %>
+    </div>
+  </div>
+  <div class="card-footer">
+    <%= submit_tag 'Verify', class: 'btn btn-primary', data: { disable_with: "Sending verification code..." } %>
+  </div>
+<% end %>

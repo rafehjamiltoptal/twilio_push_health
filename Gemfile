@@ -5,6 +5,10 @@ ruby '2.6.0'
 
 # Use mysql2 adapter to connect to mysql database
 gem 'mysql2', '~> 0.5.2'
+# delayed job worker
+# gem 'delayed_job_active_record'
+# delayed job worker
+gem 'sidekiq'
 # Twilio
 gem 'twilio-ruby'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

@@ -1,0 +1,11 @@
+<%= form_tag verify_code_twilio_sms_path, role: 'form', remote: true do |f| %>
+  <div class="card-body">
+    <div class="form-group col-6">
+      <%= label_tag :verification_code %>
+      <%= text_field_tag :verification_code, '', required: true, class: 'form-control', placeholder: 'xxxxxx' %>
+    </div>
+  </div>
+  <div class="card-footer">
+    <%= submit_tag 'Verify', class: 'btn btn-primary', data: { disable_with: "Sending verification code..." } %>
+  </div>
+<% end %>

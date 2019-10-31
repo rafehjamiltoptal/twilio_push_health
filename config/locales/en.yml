@@ -33,3 +33,7 @@ en:
   hello: "Hello world"
   twilio_call_success: "Calling %{number}"
   twilio_call_failed: "Unable to place call"
+  twilio_sms_sent: "Verification code sent to %{number} successfully!"
+  twilio_sms_failed: "Error occured while sending verification code!"
+  twilio_user_verified: "User successfully verified"
+  twilio_verification_failed: "User verification failed!"
