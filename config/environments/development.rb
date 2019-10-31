@@ -1,4 +1,7 @@
 Rails.application.configure do
+
+  API_HOST = ' https://4bc1c862.ngrok.io'.freeze
+  TWILIO_NUMBER = '+12052368178'.freeze
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on

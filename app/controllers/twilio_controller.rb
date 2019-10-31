@@ -20,7 +20,7 @@ class TwilioController < ApplicationController
   end
 
   def connect
-    response = TwilioManager::CallManager.call(params[:number_to])
+    response = TwilioManager::CallResponseManager.call(params[:number_to])
     render(xml: response.to_s)
   end
 
