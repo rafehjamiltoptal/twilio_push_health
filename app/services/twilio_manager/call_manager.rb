@@ -9,18 +9,17 @@ module TwilioManager
     end
 
     def call
-      begin
-        @client = Twilio::REST::Client.new(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
-        @call = @client.calls.create(
-                  to:   @number_from,
-                  from: TWILIO_NUMBER,
-                  url: "#{API_HOST}/twilio/connect?number_to=#{@number_to}" # Fetch instructions from this URL when the call connects
-                )
-        true
-      rescue Twilio::REST::RestError => e
-        logger.log(e.message)
-        false
-      end
+      @client = Twilio::REST::Client.new(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+      @call = @client.calls.create(
+                to:   @number_from,
+                from: TWILIO_NUMBER,
+                url: "#{API_HOST}/twilio/connect?number_to=#{@number_to}" # Fetch instructions from this URL when the call connects
+              )
+      true
+      # rescue Twilio::REST::RestError => e
+      #   logger.log(e.message)
+      #   false
+      # end
     end
   end
 end
