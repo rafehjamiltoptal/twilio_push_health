@@ -3,18 +3,15 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.6.0'
 
-# Use mysql2 adapter to connect to mysql database
-gem 'mysql2', '~> 0.5.2'
 # delayed job worker
 # gem 'delayed_job_active_record'
 # delayed job worker
-gem 'sidekiq'
 # Twilio
 gem 'twilio-ruby'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.3'
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3'
+# Heruko gem
+gem 'pg'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 # Use SCSS for stylesheets
