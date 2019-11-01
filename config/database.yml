@@ -23,8 +23,8 @@ default: &default
 
 development:
   <<: *default
-  username: user
-  password: pass
+  username: push_health_db_user
+  password: asd12345678
   database: push_health_twilio_development
 
 # The specified database role being used to connect to postgres.
@@ -83,5 +83,5 @@ test:
 production:
   <<: *default
   database: push_health_twilio_production
-  username: user
+  username: push_health_db_user
   password: <%= ENV['MYAPP_DATABASE_PASSWORD'] %>
