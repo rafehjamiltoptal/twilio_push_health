@@ -1,9 +1,5 @@
 Rails.application.configure do
 
-  API_HOST = 'https://4bc1c862.ngrok.io'.freeze
-  TWILIO_NUMBER = '+12052368178'.freeze
-  TWILIO_ACCOUNT_SID = 'ACf559f7f04e38c3fa3ea80c713763d469'.freeze
-  TWILIO_AUTH_TOKEN = 'f8f4a1084eb7f3a8891a62c7ce78f489'.freeze
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on
@@ -56,6 +52,12 @@ Rails.application.configure do
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true
+
+  # for logging
+  config.log_formatter = ::Logger::Formatter.new
+  logger = ActiveSupport::Logger.new(STDOUT)
+  logger.formatter = config.log_formatter
+  config.logger = ActiveSupport::TaggedLogging.new(logger)
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true

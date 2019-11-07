@@ -1,6 +1,7 @@
 class TwilioController < ApplicationController
   before_action :permit_params, only: :create
   before_action :authenticate_twilio_request, only: :connect
+
   def new
     respond_to do |format|
       format.html
