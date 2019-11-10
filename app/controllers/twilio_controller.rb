@@ -9,19 +9,16 @@ class TwilioController < ApplicationController
   end
 
   def create
-    if TwilioManager::CallManager.call(params[:number_from], params[:number_to])
-      flash[:notice] = t(:twilio_call_success, number: params[:number_from])
-    else
-      flash[:error] = t(:twilio_call_failed)
-      # raise Twilio::REST::RestError.new
-    end
+    TwilioAPI.call_number(params[:number_from], params[:number_to])
+    flash[:notice] = t(:twilio_call_success, number: params[:number_from])
+
     respond_to do |format|
       format.js
     end
   end
 
   def connect
-    response = TwilioManager::CallResponseManager.call(params[:number_to])
+    response = TwilioAPI.call_forwarding_response(params[:number_to])
     render(xml: response.to_s)
   end
 
@@ -32,20 +29,11 @@ class TwilioController < ApplicationController
   end
 
   def authenticate_twilio_request
-    return true if twilio_req?
+    return true if TwilioAPI.twilio_req?(request, params)
 
-    response = Twilio::TwiML::VoiceResponse.new(&:hangup)
+    response = TwilioAPI.hangup_response
 
-    render xml: response.to_s, status: unauthorized
+    render xml: response.to_s, status: :unauthorized
     false
-  end
-
-  def twilio_req?
-    validator = Twilio::Security::RequestValidator.new(TWILIO_AUTH_TOKEN)
-
-    post_vars = params.reject { |k, _| k.downcase == k }
-    twilio_signature = request.headers['HTTP_X_TWILIO_SIGNATURE']
-
-    validator.validate(request.url, post_vars, twilio_signature)
   end
 end

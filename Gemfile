@@ -6,8 +6,6 @@ ruby '2.6.0'
 # delayed job worker
 # gem 'delayed_job_active_record'
 # delayed job worker
-# Twilio
-gem 'twilio-ruby'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.3'
 # Heruko gem

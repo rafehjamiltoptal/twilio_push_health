@@ -13,12 +13,10 @@ class TwilioSmsController < ApplicationController
     verification_code = generate_code(DEFAULT_VERIFICATION_CODE_LENGTH)
     message_body      = "Your verification code is #{verification_code}"
 
-    if TwilioManager::SmsManager.call(params[:user_number], message_body)
-      @user.update(verification_code: verification_code, phone_number: params[:user_number])
-      flash[:notice] = t(:twilio_sms_sent, number: params[:user_number])
-    else
-      flash[:error] = t(:twilio_sms_failed)
-    end
+    TwilioAPI.send_message(params[:user_number], message_body)
+    @user.update(verification_code: verification_code, phone_number: params[:user_number])
+    flash[:notice] = t(:twilio_sms_sent, number: params[:user_number])
+
     respond_to do |format|
       format.js
     end
