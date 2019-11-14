@@ -10,19 +10,17 @@ module TwilioAPI
     end
   end
 
-  class CallNumberError < RequestError; end
-  class SendMessageError < RequestError; end
-
   class << self
-    def call_number(number_from, number_to)
+    def call_number(number_from, number_to, options = {})
+      twilio_webhook_url = options['call_back_url'].present? ? options['call_back_url'] : call_back_url(number_to)
       params = {
         'From' => ENV['TWILIO_NUMBER'],
         'To'   => number_from,
-        'Url'  => call_back_url(number_to)
+        'Url'  => twilio_webhook_url
       }
       # for testing
       # {"answered_by" => nil, "price_unit" => "USD", "parent_call_sid" => nil, "caller_name" => nil, "group_sid" => nil, "duration" => nil, "from" => ENV['TWILIO_NUMBER'], "to" => number_from, "annotation" => nil, "date_updated" => nil, "sid" => "CAa8a44a42dd7c07f8b629e12bc16ee46d", "price" => nil, "api_version" => "2010-04-01", "status" => "queued", "direction" => "outbound-api", "start_time" => nil, "date_created" => nil, "from_formatted" => "(205) 236-8178", "forwarded_from" => nil, "uri" => "/2010-04-01/Accounts/#{ENV['TWILIO_ACCOUNT_SID']}/Calls/CAa8a44a42dd7c07f8b629e12bc16ee46d.json", "account_sid" => "#{ENV['TWILIO_ACCOUNT_SID']}", "end_time" => nil, "to_formatted" => number_from, "phone_number_sid" => "PNb46a5c5da73a699bb038509074c891cf", "subresource_uris" => {"notifications" => "/2010-04-01/Accounts/#{ENV['TWILIO_ACCOUNT_SID']}/Calls/CAa8a44a42dd7c07f8b629e12bc16ee46d/Notifications.json", "recordings" => "/2010-04-01/Accounts/#{ENV['TWILIO_ACCOUNT_SID']}/Calls/CAa8a44a42dd7c07f8b629e12bc16ee46d/Recordings.json", "feedback" => "/2010-04-01/Accounts/#{ENV['TWILIO_ACCOUNT_SID']}/Calls/CAa8a44a42dd7c07f8b629e12bc16ee46d/Feedback.json", "feedback_summaries" => "/2010-04-01/Accounts/#{ENV['TWILIO_ACCOUNT_SID']}/Calls/FeedbackSummary.json"}}
-      twilio_api(:post, 'Calls', params)
+      twilio_api('Calls', params)
     end
 
     def send_message(number, message_body)
@@ -33,7 +31,7 @@ module TwilioAPI
       }
       # for testing
       {"sid" => "SM9905a2f7f8c840dea4dfe7d71e8714b1", "date_created" => "Tue, 12 Nov 2019 19:21:04 +0000", "date_updated" => "Tue, 12 Nov 2019 19:21:04 +0000", "date_sent" => nil, "account_sid" => ENV['TWILIO_ACCOUNT_SID'], "to" => number, "from" => ENV['TWILIO_NUMBER'], "messaging_service_sid" => nil, "body" => message_body, "status" => "queued", "num_segments" => "1", "num_media" => "0", "direction" => "outbound-api", "api_version" => "2010-04-01", "price" => nil, "price_unit" => "USD", "error_code" => nil, "error_message" => nil, "uri" => "/2010-04-01/Accounts/#{ENV['TWILIO_ACCOUNT_SID']}/Messages/SM9905a2f7f8c840dea4dfe7d71e8714b1.json", "subresource_uris" => {"media" => "/2010-04-01/Accounts/#{ENV['TWILIO_ACCOUNT_SID']}/Messages/SM9905a2f7f8c840dea4dfe7d71e8714b1/Media.json"}}
-      twilio_api(:post, 'Messages', params)
+      twilio_api('Messages', params)
     end
 
     def call_forwarding_response(number)
@@ -59,7 +57,7 @@ module TwilioAPI
 
     def twilio_api(http_method, path, body_h)
       url = "https://api.twilio.com/2010-04-01/Accounts/#{CGI.escape(ENV['TWILIO_ACCOUNT_SID'])}/#{path}.json"
-      response = HttpRequester.request(http_method, url: url, body: body_h, basic_auth: { username: ENV['TWILIO_ACCOUNT_SID'], password: ENV['TWILIO_AUTH_TOKEN'] }, headers: {'Content-Type' => 'application/x-www-form-urlencoded'})
+      response = HttpRequester.post(url: url, body: body_h, basic_auth: { username: ENV['TWILIO_ACCOUNT_SID'], password: ENV['TWILIO_AUTH_TOKEN'] }, headers: {'Content-Type' => 'application/x-www-form-urlencoded'})
       json = response[:body]
       json.presence && JSON.parse(json)
     rescue HttpRequester::ResponseError => e
